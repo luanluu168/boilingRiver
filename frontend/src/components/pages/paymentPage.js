@@ -8,8 +8,9 @@ import {loadStripe} from '@stripe/stripe-js';
 import CheckoutForm from '../payment/checkoutForm';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../checkoutSteps/checkoutSteps';
+require('dotenv').config({path: '../../../../.env'});
 
-const stripePromise = loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(`'${process.env.REACT_APP_PUBLISHABLE_KEY}'`);
 
 class Payment extends React.Component {
   state = {

@@ -4,94 +4,55 @@ const       router = express.Router();
 
 router.get('/', (req, res) => {
     //TODO: check user role
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
-
-        connection.query('SELECT * FROM Product', (error,rows) => {
-            connection.release();
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-
-            res.json(rows);
+    let query = `SELECT * FROM "Product"`;
+    dbConnection.any(query)
+        .then(function (data) {
+            // console.log('Manage Product DATA:', data);
+            return res.status(200).json(data);
+        })
+        .catch(function (error) {
+            console.log('ERROR:', error)
         });
-    });
 });
 
 router.get('/categoryOptions', (req, res) => {
     console.log("Get category options is called");
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
-
-        connection.query('SELECT id, name FROM Category', (error,rows) => {
-            connection.release();
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-
-            console.log(rows);
-            res.json(rows);
+    let query = `SELECT id, name FROM "Category"`;
+    dbConnection.any(query)
+        .then(function (data) {
+            // console.log('Manage Product DATA:', data);
+            return res.status(200).json(data);
+        })
+        .catch(function (error) {
+            console.log('ERROR:', error)
         });
-    });
 });
 
 router.get('/updateProductInfo/:id', (req, res) => {
     let updateId = req.params.id;
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
-
-        connection.query(`SELECT id, name, price, description, bar_code FROM Product WHERE id=${updateId}`, (error,rows) => {
-            connection.release();
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-
-            res.json(rows);
+    let query = `SELECT id, name, price, description, bar_code FROM "Product" WHERE id=${updateId}`;
+    dbConnection.any(query)
+        .then(function (data) {
+            // console.log('Manage Product DATA:', data);
+            return res.status(200).json(data);
+        })
+        .catch(function (error) {
+            console.log('ERROR:', error)
         });
-    });
 });
 
 
 router.post('/delete/:id', (req, res) => {
     let removeId = req.params.id;
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
-
-        let query = `DELETE FROM Product WHERE id=` + removeId;
-        connection.query(query, (error,rows) => {
-            connection.release();
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-
-            if(rows.affectedRows === 1) {
-                res.json({success: true});
-            } else {
-                res.json({success: false});
-            }
-            
+    let query = `DELETE FROM "Product" WHERE id=$1`;
+    let queryParam = [ removeId ];
+    dbConnection.result(query, queryParam, r => r.rowCount)
+        .then(count => {
+            (count === 1) ? res.json({success: true}) : res.json({success: false});
+        })
+        .catch(error => {
+            console.log('ERROR:', error)
         });
-    });
 });
 
 router.post('/update', (req, res) => {
@@ -101,29 +62,21 @@ router.post('/update', (req, res) => {
     let description = req.body.productFormDescription;
     let barCode = req.body.productFormBarcode;
 
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
-
-        let query = `UPDATE Product SET name='${name}', price=${price}, description='${description}', bar_code='${barCode}' WHERE id=${id}`;
-        console.log(query);
-        connection.query(query, (error,rows) => {
-            connection.release();
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-
-            if(rows.affectedRows === 1) {
-                console.log("Update product id=" + id + " sucessfully");  
-            } 
-            
-            res.redirect("/ManageProducts");
+    let query = `UPDATE "Product" SET name=$1, price=$2, description=$3, bar_code=$4 WHERE id=$5`;
+    let queryParam = [
+        name,
+        price,
+        description,
+        barCode,
+        id
+    ];
+    dbConnection.result(query, queryParam, r => r.rowCount)
+        .then(count => {
+            (count === 1) ? res.json({success: true}) : res.json({success: false});
+        })
+        .catch(error => {
+            console.log('ERROR:', error)
         });
-    });
 });
 
 router.post('/insert', (req, res) => {
@@ -139,50 +92,37 @@ router.post('/insert', (req, res) => {
 
     let categoryId = req.body.productFormCategoryOption;
 
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
+    // PRODUCT TEMPLATE
+    let query = `INSERT INTO "Product_Template"(size, color, quantity, category_id) VALUES ('${ptSize}', '${ptColor}', ${ptQuantity}, ${categoryId}) RETURNING id`;
+    dbConnection.any(query)
+        .then(function (data) {
+            pTemplateId = data;
 
-        // PRODUCT TEMPLATE
-        let query = `INSERT INTO Product_Template(size, color, quantity, category_id) VALUES ('${ptSize}', '${ptColor}', ${ptQuantity}, ${categoryId})`;
-        connection.query(query, (error,rows) => {
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-            
-            if(rows.affectedRows === 1) {
-                pTemplateId = rows.insertId;
-
-                    // PRODUCT
-                query = `INSERT INTO Product(name, price, description, bar_code, product_template_id) VALUES (
-                    '${pName}', ${pPrice}, '${pDescription}', '${pBarcode}', ${pTemplateId})`;
-                console.log(query);
-                for(let i=0; i<ptQuantity; i++) {
-                    connection.query(query, (error,rows) => {
-                        if(error) {
-                            console.error("Error: " + error);
-                            return;
-                        }
-
-                        if(rows.affectedRows === 1) {
-                            console.log("Insert Product successfully");
-                        } else {
-                            console.log("Insert Product Fail");
-                        }
+            // PRODUCT
+            query = `INSERT INTO "Product"(name, price, description, bar_code, product_template_id) VALUES (
+                    $1, $2, $3, $4, $5)`;
+            let queryParam = [
+                pName,
+                pPrice,
+                pDescription,
+                pBarcode,
+                pTemplateId
+            ];
+            for(let i=0; i<ptQuantity; i++) {
+                db.result(query, queryParam, r => r.rowCount)
+                    .then(count => {
+                        (count === 1) ? console.log("Insert Product successfully") : console.log("Insert Product Fail");
+                    })
+                    .catch(error => {
+                        console.log('ERROR:', error)
                     });
-                }
-
-                connection.release();
-                // return res.redirect("/ManageProducts");
             }
 
             return res.redirect("/ManageProducts");
+        })
+        .catch(function (error) {
+            console.log('ERROR:', error)
         });
-    });
 });
 
 

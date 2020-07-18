@@ -162,8 +162,8 @@ class ManageProducts extends React.Component {
                             </table>
                         </div>
 
-                        <div className="col-sm-4">
-                            {this.state.showUpdateForm && 
+                        {this.state.showUpdateForm && 
+                            <div className="col-sm-4">
                                 <div className="row justify-content-center mt-3 mb-4 mr-1">
                                     <div className="card">
                                         <h5 className="card-header text-center py-4 bg-primary">
@@ -191,12 +191,9 @@ class ManageProducts extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                }
-                        </div>
+                            </div>
+                        }
                     </div>
-                    
-
-                    
                 </div>
             </div>)
         );

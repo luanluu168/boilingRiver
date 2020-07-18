@@ -12,77 +12,49 @@ router.post('/Signup', (req, res) => {
     let  password = req.body.userSignupPassword;
     let timestamp = "'" + getTimeStamp() + "'";
 
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
-
-        // account
-        let sql       = `INSERT INTO Account(email_login, password, active, login_date) Values ('${email}', '${password}', true, ${timestamp})`;
-        let accountId;
-        connection.query(sql, (error,rows) => {
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-            console.log("rows: " + rows);
-            console.log("rows.insertID: " + rows.insertId);
-            accountId = rows.insertId;
-            // console.log("1");
-
+    // account
+    let sql       = `INSERT INTO "Account"(email_login, password, active, login_date) Values ('${email}', '${password}', true, ${timestamp}) RETURNING id`;
+    dbConnection.any(sql)
+        .then(function (data) {
+            let accountId = data[0].id;
+            
             // role
             let roleName  = "'user'";
             let roleDescription = "'user'";
-            sql       = `INSERT INTO Role(account_id, name, description) Values (${accountId}, ${roleName}, ${roleDescription})`;
-            connection.query(sql, (error,rows) => {
-                if(error) {
-                    console.error("Error: " + error);
-                    return;
-                }
-
-            });
+            sql       = `INSERT INTO "Role"(account_id, name, description) Values (${accountId}, ${roleName}, ${roleDescription})`;
+            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
 
             // Account_Role_Rel
-            sql       = `INSERT INTO Account_Role_Rel(account_id, role_id) Values (${accountId}, ${accountId})`;
-            connection.query(sql, (error,rows) => {
-                if(error) {
-                    console.error("Error: " + error);
-                    return;
-                }
-            });
+            sql       = `INSERT INTO "Account_Role_Rel"(account_id, role_id) Values (${accountId}, ${accountId})`;
+            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
 
             // country
-            sql       = `INSERT INTO Country(name) Values ('${country}')`;
-            connection.query(sql, (error,rows) => {
-                if(error) {
-                    console.error("Error: " + error);
-                    return;
-                }
-            });
-            // city
-            sql       = `INSERT INTO City(name) Values ('${city}')`;
-            connection.query(sql, (error,rows) => {
-                if(error) {
-                    console.error("Error: " + error);
-                    return;
-                }
-            });
-            // create customer
-            sql       = `INSERT INTO Customer(full_name, email, age, account_id, country_id, city_id) Values ('${name}', '${email}', ${age}, ${accountId}, ${accountId}, ${accountId})`;
-            connection.query(sql, (error,rows) => {
-                connection.release();
-                if(error) {
-                    console.error("Error: " + error);
-                    return;
-                }
-                console.log("User sign up successfully!");
+            sql       = `INSERT INTO "Country"(name) Values ('${country}')`;
+            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
 
-                res.status(200).redirect('/Signin');
-            });
+            // city
+            sql       = `INSERT INTO "City"(name) Values ('${city}')`;
+            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
+
+            // create customer
+            sql       = `INSERT INTO "Customer"(full_name, email, age, account_id, country_id, city_id) Values ('${name}', '${email}', ${age}, ${accountId}, ${accountId}, ${accountId})`;
+            dbConnection.any(sql)
+                .then(function (data) {
+                    console.log("User sign up successfully!");
+
+                    res.status(200).redirect('/Signin');
+                })
+                .catch(function (error) {
+                    if(error) {
+                        console.error("Error: " + error);
+                        res.redirect("/Signup");
+                    }
+                });  
+        })
+        .catch(function (error) {
+            console.log('ERROR:', error);
+            res.redirect("/Signup");
         });
-    });
 });
 
 router.post('/Signout', (req, res) => {
@@ -102,62 +74,53 @@ router.post('/Signout', (req, res) => {
 });
 
 router.post('/Signin', (req, res) => {
-    dbConnection.getConnection((error, connection) => {
-        if(error) {
-            console.error("Error: " + error);
-            return;
-        }
-        console.log('Connected successfully!');
-
-        let loginEmail = req.body.userEmail;
-        let loginPassword = req.body.userPassword;
-        let query = `SELECT Account.id, Account.email_login, Account.password,
-                            Role.name,
-                            Customer.full_name AS customerName 
-                    FROM Account
-                    JOIN Customer ON Account.id = Customer.account_id
-                    JOIN Account_Role_Rel ON Account_Role_Rel.account_id = Account.id
-                    JOIN Role ON Role.id = Account_Role_Rel.role_id
-                    WHERE Account.email_login= '${loginEmail}';`;
-
-        connection.query(query, (error,rows) => {
-            connection.release();
-            if(error) {
-                console.error("Error: " + error);
-                return;
-            }
-
-            if(rows.length === 0) {
+    let loginEmail = req.body.userEmail;
+    let loginPassword = req.body.userPassword;
+    let query = `SELECT "Account".id, "Account".email_login, "Account".password,
+                        "Role".name,
+                        "Customer".full_name AS "customerName" 
+                FROM "Account"
+                JOIN "Customer" ON "Account".id = "Customer".account_id
+                JOIN "Account_Role_Rel" ON "Account_Role_Rel".account_id = "Account".id
+                JOIN "Role" ON "Role".id = "Account_Role_Rel".role_id
+                WHERE "Account".email_login= '${loginEmail}'`;
+    dbConnection.any(query)
+        .then(function (data) {
+            if(data.lenth === 0) {
                 return res.redirect('/Signin');
             }
 
-            if(rows[0].name == 'user' && rows[0].password == loginPassword) {
+            if(data[0].name == 'user' && data[0].password == loginPassword) {
                 req.session.valid = true;
                 req.session.User = {
-                    aId: rows[0].id,
+                    aId: data[0].id,
                     role: 'user',
-                    name: rows[0].customerName,
+                    name: data[0].customerName,
                     email: loginEmail,
                     loginStatus: true
                 };
                 res.cookie("userLoginInfo", JSON.stringify(req.session.User), { maxAge: 2 * 60 * 60 * 1000 });
                 res.redirect('/');
-            } else if ((rows[0].name == 'manager' && rows[0].password == loginPassword) || (rows[0].name == 'employee' && rows[0].password == loginPassword)){
+            } else if ((data[0].name == 'manager' && data[0].password == loginPassword) || (data[0].name == 'employee' && data[0].password == loginPassword)){
                 req.session.valid = true;
                 req.session.User = {
-                    aId: rows[0].id,
-                    role: rows[0].name,
-                    name: rows[0].customerName,
+                    aId: data[0].id,
+                    role: data[0].name,
+                    name: data[0].customerName,
                     email: loginEmail,
                     loginStatus: true
                 };
                 res.cookie("userLoginInfo", JSON.stringify(req.session.User), { maxAge: 2 * 60 * 60 * 1000 });
                 res.redirect('/');
             } else {
+                console.log("Inside Signin: none login");
                 res.redirect('/Signin');
             }
+
+        })
+        .catch(function (error) {
+            console.log('ERROR:', error)
         });
-    });
 });
 
 router.get('/Signin', (req, res) => {

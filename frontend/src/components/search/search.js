@@ -1,6 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import { realtimeSearch, regularSearch } from '../../actions';
+import { realtimeSearch, regularSearch, clearIconOn, clearIconOff } from '../../actions';
 import { connect } from 'react-redux';
 
 class Search extends React.Component {
@@ -8,20 +8,22 @@ class Search extends React.Component {
         return window.$("input[name=searchText]").val();
     }
 
+    clearSearchText() {
+        window.$("input[name=searchText]").val('');
+        this.props.clearIconOff();
+    }
+
     render() {
-        this.getSearchText();
         return (
             <div className='container-fluid mt-3 mb-3'>
-                {/* <form className="w-75 m-auto" action="/search/searchText=:" method="GET"> */}
                 <div className="w-75 m-auto">
-                    <div className="input-group md-form form-sm form-2 pl-0">
-                        <input className="flex-grow-1 border border-info" type="text" name="searchText" onChange={(event) => this.props.realtimeSearch(event.target.value)} placeholder="Real-time Search by typing in a keyword, eg: jacket, jean, or hoodie" aria-label="Search" />
-                        <div className="input-group-append">
-                            <button className="btn btn-outline-dark" type="button" onClick={() => this.props.regularSearch(this.getSearchText())}><i className="fas fa-2x fa-search text-primary" aria-hidden="true" /></button>
-                        </div>
+                    <div className="wrapper">
+                        <i className="fas fa-search text-info search-icon" aria-hidden="true" />
+                        <input placeholder="Real-time Search by typing in a keyword, eg: jacket, jean, or hoodie" type="text" className="search" name="searchText" onChange={(event) => this.props.realtimeSearch(event.target.value)} aria-label="Search"  />
+                        {/* <button className="btn search-button" type="button" onClick={() => this.props.regularSearch(this.getSearchText())}><i className="fas fa-search text-primary" aria-hidden="true" /></button> */}
+                        { this.props.displayClearIcon ? <span className="remove-search-icon" onClick={() => this.clearSearchText()}><span>&#10006;</span></span> : <span></span> }
                     </div>
                 </div>
-                {/* </form> */}
             </div>
         );
     }
@@ -29,14 +31,16 @@ class Search extends React.Component {
 
 const mapStateToProps = (state) => {
     return ({
-        searchProducts: state.products.products
+        displayClearIcon: state.search.displayClearIcon
     })
 }
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         realtimeSearch: realtimeSearch,
-        regularSearch: regularSearch
+        regularSearch: regularSearch,
+        clearIconOn: clearIconOn,
+        clearIconOff: clearIconOff
     }, dispatch);
 }
 

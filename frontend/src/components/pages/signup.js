@@ -15,7 +15,7 @@ class Signup extends React.Component {
                     <h3 className="text-center text-white">Sign up</h3>
                     </div>
                     <div className="card-body">
-                    <form method="POST">
+                    <form action="/Auth/Signup" method="POST">
                         <div className="input-group form-group">
                         <div className="input-group-prepend">
                             <span className="input-group-text"><i className="fas fa-user" /></span>
@@ -57,7 +57,7 @@ class Signup extends React.Component {
                         <label className="custom-control-label" htmlFor="termCheckBox">I accept the <a className="a-href text-info" href="# " type="button" data-toggle="modal" data-target="#contractModal"> Terms and Conditions</a></label>
                         </div>
                         <div className="form-group row justify-content-center">
-                        <input type="submit" name="submit" defaultValue="Sign-up" className="btn btn-primary rounded-pill w-75" />
+                        <input type="submit" defaultValue="Sign-up" className="btn btn-primary rounded-pill w-75" />
                         </div>
                         <p className="cross-middle-line-text">Or</p>
                         <div className="text-center">
