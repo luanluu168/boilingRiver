@@ -3,11 +3,11 @@ const dbConnection = require('../../database');
 const       router = express.Router();
 
 router.get('/?searchText=:pName', (req, res) => {
-    if(req.params.pName === '') {
+    if(req.params.pName === undefined || req.params.pName === '') {
         return res.json("");
     }
-
-    let query = `SELECT * FROM "Product" WHERE name LIKE '%${req.params.pName}%'`;
+    
+    let query = `SELECT * FROM "Product" WHERE name LIKE '%${req.params.pName.toLowerCase()}%'`;
     dbConnection.any(query)
         .then(function (data) {
             return res.status(200).json(data);
@@ -18,11 +18,11 @@ router.get('/?searchText=:pName', (req, res) => {
 });
 
 router.post('/?searchText=:pName', (req, res) => {
-    if(req.params.pName === '') {
+    if(req.params.pName === undefined || req.params.pName === '') {
         return res.json("");
     }
 
-    let query = `SELECT * FROM "Product" WHERE name LIKE '%${req.params.pName}%'`;
+    let query = `SELECT * FROM "Product" WHERE name LIKE '%${req.params.pName.toLowerCase()}%'`;
     dbConnection.any(query)
         .then(function (data) {
             return res.status(200).json(data);
@@ -33,7 +33,14 @@ router.post('/?searchText=:pName', (req, res) => {
 });
 
 router.get('/realtime/:value?', (req, res) => {
-    let query = (req.params.value === undefined) ? `SELECT * FROM "Product"` : `SELECT * FROM "Product" WHERE name LIKE '%${req.params.value.toLowerCase()}%'`;
+    let query;
+    if(!req.params.value) {
+        query = `SELECT * FROM "Product"`;
+    } else {
+        let          searchText = req.params.value.toLowerCase() + "";
+        const replaceSearchText = searchText.replace(/\\/g, ' ');
+        query = `SELECT * FROM "Product" WHERE name LIKE '%${replaceSearchText}%'`;
+    }
 
     dbConnection.any(query)
         .then(function (data) {

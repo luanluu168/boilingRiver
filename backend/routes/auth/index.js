@@ -1,19 +1,95 @@
 const        express = require('express');
 const   dbConnection = require('../../database');
 const {getTimeStamp} = require('../../utils/utils.js');
+const        bcrypt = require('bcrypt');
 const         router = express.Router();
 
-router.post('/Signup', (req, res) => {
-    let      name = req.body.userSignupName;
-    let       age = req.body.userSignupAge;
-    let   country = req.body.userSignupCountry;
-    let      city = req.body.userSignupCity;
-    let     email = req.body.userSignupEmail;
-    let  password = req.body.userSignupPassword;
+const      NUM_SALTS = 8;
+
+// router.post('/Signup/:userSignupName&:userSignupAge&:userSignupCountry&:userSignupCity&:userSignupEmail&:userSignupPassword', async (req, res) => {
+//     let      name = req.params.userSignupName;
+//     let       age = req.params.userSignupAge;
+//     let   country = req.params.userSignupCountry;
+//     let      city = req.params.userSignupCity;
+//     let     email = req.params.userSignupEmail;
+//     let  password = req.params.userSignupPassword;
+//     let timestamp = "'" + getTimeStamp() + "'";
+
+//     // account
+//     let sql       = `INSERT INTO "Account"(email_login, password, active, login_date) Values ('${email}', '${password}', true, ${timestamp}) RETURNING id`;
+//     await dbConnection.any(sql)
+//         .then(async (data) => {
+//             let accountId = data[0].id;
+            
+//             // role
+//             let roleName  = "'user'";
+//             let roleDescription = "'user'";
+//             sql       = `INSERT INTO "Role"(account_id, name, description) Values (${accountId}, ${roleName}, ${roleDescription}) RETURNING id`;
+//             let roleId = await dbConnection.any(sql).then(function (data) {
+//                 return data[0].id; })
+//                 .catch(function (error) { 
+//                     console.log('ERROR:', error);
+//                     res.json({errMsg: "401"});
+//                 });  
+
+//             // Account_Role_Rel
+//             sql       = `INSERT INTO "Account_Role_Rel"(account_id, role_id) Values (${accountId}, ${roleId})`;
+//             await dbConnection.any(sql).catch(function (error) { 
+//                 console.log('ERROR:', error);
+//                 res.json({errMsg: "402"});
+//             });  
+
+//             // country
+           
+//             sql       = `INSERT INTO "Country"(name) Values ('${country}') RETURNING id`;
+//             let countryId = await dbConnection.any(sql).then(function (data) {
+//                 return data[0].id; })
+//                 .catch(function (error) { 
+//                     console.log('ERROR:', error);
+//                     res.json({errMsg: "403"});
+//                 });  
+
+//             // city
+//             sql       = `INSERT INTO "City"(name) Values ('${city}') RETURNING id`;
+//             let cityId = await dbConnection.any(sql).then(function (data) {
+//                 return data[0].id; })
+//                 .catch(function (error) { 
+//                     console.log('ERROR:', error);
+//                     res.json({errMsg: "404"});
+//                 }); 
+
+//             // create customer
+//             sql       = `INSERT INTO "Customer"(full_name, email, age, account_id, country_id, city_id) Values ('${name}', '${email}', ${age}, ${accountId}, ${countryId}, ${cityId})`;
+//             dbConnection.any(sql)
+//                 .then(function (data) {
+//                     console.log("User sign up successfully!");
+
+//                     res.status(200).json({errMsg: "none"});
+//                 })
+//                 .catch(function (error) {
+//                     if(error) {
+//                         res.json({errMsg: error});
+//                     }
+//                 });  
+//         })
+//         .catch(function (error) {
+//             console.log('ERROR:', error);
+//             res.status(405).json({errMsg: error});
+//         });
+// });
+
+router.post('/Signup/:userSignupName&:userSignupAge&:userSignupCountry&:userSignupCity&:userSignupEmail&:userSignupPassword', (req, res) => {
+    let      name = req.params.userSignupName;
+    let       age = req.params.userSignupAge;
+    let   country = req.params.userSignupCountry;
+    let      city = req.params.userSignupCity;
+    let     email = req.params.userSignupEmail;
+    let  password = req.params.userSignupPassword;
     let timestamp = "'" + getTimeStamp() + "'";
+    let      hash = bcrypt.hashSync(password, NUM_SALTS);
 
     // account
-    let sql       = `INSERT INTO "Account"(email_login, password, active, login_date) Values ('${email}', '${password}', true, ${timestamp}) RETURNING id`;
+    let sql       = `INSERT INTO "Account"(email_login, password, active, login_date) Values ('${email}', '${hash}', true, ${timestamp}) RETURNING id`;
     dbConnection.any(sql)
         .then(function (data) {
             let accountId = data[0].id;
@@ -21,39 +97,54 @@ router.post('/Signup', (req, res) => {
             // role
             let roleName  = "'user'";
             let roleDescription = "'user'";
-            sql       = `INSERT INTO "Role"(account_id, name, description) Values (${accountId}, ${roleName}, ${roleDescription})`;
-            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
+            sql       = `INSERT INTO "Role"(account_id, name, description) Values (${accountId}, ${roleName}, ${roleDescription}) RETURNING id`;
+            dbConnection.any(sql).then(function (data) {
+                    let roleId = data[0].id;
 
-            // Account_Role_Rel
-            sql       = `INSERT INTO "Account_Role_Rel"(account_id, role_id) Values (${accountId}, ${accountId})`;
-            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
+                     // Account_Role_Rel
+                    sql       = `INSERT INTO "Account_Role_Rel"(account_id, role_id) Values (${accountId}, ${roleId})`;
+                    dbConnection.any(sql).catch(function (error) { 
+                        res.json({errMsg: error});
+                    });  
 
-            // country
-            sql       = `INSERT INTO "Country"(name) Values ('${country}')`;
-            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
+                    // country
+                    sql       = `INSERT INTO "Country"(name) Values ('${country}') RETURNING id`;
+                    dbConnection.any(sql).then(function (data) {
+                            let countryId = data[0].id;
 
-            // city
-            sql       = `INSERT INTO "City"(name) Values ('${city}')`;
-            dbConnection.any(sql).catch(function (error) { console.log('ERROR:', error) });  
+                            // city
+                            sql       = `INSERT INTO "City"(name) Values ('${city}') RETURNING id`;
+                            dbConnection.any(sql).then(function (data) {
+                                    let cityId = data[0].id;
 
-            // create customer
-            sql       = `INSERT INTO "Customer"(full_name, email, age, account_id, country_id, city_id) Values ('${name}', '${email}', ${age}, ${accountId}, ${accountId}, ${accountId})`;
-            dbConnection.any(sql)
-                .then(function (data) {
-                    console.log("User sign up successfully!");
+                                    // create customer
+                                    sql       = `INSERT INTO "Customer"(full_name, email, age, account_id, country_id, city_id) Values ('${name}', '${email}', ${age}, ${accountId}, ${countryId}, ${cityId})`;
+                                    dbConnection.any(sql)
+                                        .then(function (data) {
+                                            console.log("User sign up successfully!");
 
-                    res.status(200).redirect('/Signin');
+                                            res.status(200).json({errMsg: "none"});
+                                        })
+                                        .catch(function (error) {
+                                            if(error) {
+                                                res.json({errMsg: error});
+                                            }
+                                        });
+                                })
+                                .catch(function (error) { 
+                                    res.json({errMsg: error});
+                                }); 
+                        })
+                        .catch(function (error) { 
+                            res.json({errMsg: error});
+                        });  
                 })
-                .catch(function (error) {
-                    if(error) {
-                        console.error("Error: " + error);
-                        res.redirect("/Signup");
-                    }
-                });  
+                .catch(function (error) { 
+                    res.json({errMsg: error});
+                });    
         })
         .catch(function (error) {
-            console.log('ERROR:', error);
-            res.redirect("/Signup");
+            res.json({errMsg: {detail: `Email: ${email} already exists`} });
         });
 });
 
@@ -73,9 +164,9 @@ router.post('/Signout', (req, res) => {
     return res.status(200).redirect("/");
 });
 
-router.post('/Signin', (req, res) => {
-    let loginEmail = req.body.userEmail;
-    let loginPassword = req.body.userPassword;
+router.post('/Signin/:userEmail&:userPassword', (req, res) => {
+    let    loginEmail = req.params.userEmail;
+    let loginPassword = req.params.userPassword;
     let query = `SELECT "Account".id, "Account".email_login, "Account".password,
                         "Role".name,
                         "Customer".full_name AS "customerName" 
@@ -86,11 +177,12 @@ router.post('/Signin', (req, res) => {
                 WHERE "Account".email_login= '${loginEmail}'`;
     dbConnection.any(query)
         .then(function (data) {
-            if(data.lenth === 0) {
-                return res.redirect('/Signin');
+            if(data.length === 0) {
+                return res.json({errMsg: "Email was incorrect"});
             }
 
-            if(data[0].name == 'user' && data[0].password == loginPassword) {
+            const isValidatePassword = bcrypt.compareSync(loginPassword, data[0].password);
+            if(data[0].name == 'user' && (data[0].password == loginPassword || isValidatePassword)) {
                 req.session.valid = true;
                 req.session.User = {
                     aId: data[0].id,
@@ -100,8 +192,8 @@ router.post('/Signin', (req, res) => {
                     loginStatus: true
                 };
                 res.cookie("userLoginInfo", JSON.stringify(req.session.User), { maxAge: 2 * 60 * 60 * 1000 });
-                res.redirect('/');
-            } else if ((data[0].name == 'manager' && data[0].password == loginPassword) || (data[0].name == 'employee' && data[0].password == loginPassword)){
+                res.json({errMsg: "none"});
+            } else if ((data[0].name == 'manager' && (data[0].password == loginPassword || isValidatePassword)) || (data[0].name == 'employee' && (data[0].password == loginPassword || isValidatePassword))){
                 req.session.valid = true;
                 req.session.User = {
                     aId: data[0].id,
@@ -111,15 +203,15 @@ router.post('/Signin', (req, res) => {
                     loginStatus: true
                 };
                 res.cookie("userLoginInfo", JSON.stringify(req.session.User), { maxAge: 2 * 60 * 60 * 1000 });
-                res.redirect('/');
+                res.json({errMsg: "none"});
             } else {
-                console.log("Inside Signin: none login");
-                res.redirect('/Signin');
+                res.json({errMsg: "Password is wrong"});
             }
 
         })
         .catch(function (error) {
-            console.log('ERROR:', error)
+            console.log('ERROR:', error);
+            res.json({errMsg: error});
         });
 });
 

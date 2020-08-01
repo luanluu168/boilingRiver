@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
-import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { resetCookieAndCart } from '../../actions';
 import { connect } from 'react-redux';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const CheckoutForm = (props) => {
-  const stripe = useStripe();
+  const   stripe = useStripe();
   const elements = useElements();
+  let    history = useHistory();
 
   const [validPayment, setValidPayment] = useState(false);
 
@@ -21,21 +23,34 @@ const CheckoutForm = (props) => {
       return;
     }
 
-    // Get a reference to a mounted CardElement. Elements knows how
-    // to find your CardElement because there can only ever be one of
-    // each type of element.
-    const cardElement = elements.getElement(CardElement);
-
-    // Use your card Element with other Stripe.js APIs
-    const {error, paymentMethod} = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-    });
-
-    if (error) {
-      console.log('[error]', error);
+    const card = elements.getElement(CardElement);
+    const result = await stripe.createToken(card);
+    if (result.error) {
+        console.log(result.error.message);
     } else {
-      console.log('[PaymentMethod]', paymentMethod);
+        // console.log("----Result", result.token);
+
+        let  name = window.$('#cardOwnerName').val();
+        let phone = window.$('#cardOwnerPhone').val();
+
+        let route = `/stripe/payment/name=${name}&phone=${phone}&amount=${props.total}`;
+        axios.post(route, result.token)
+            .then(response => {
+                // close modal and process receipt 
+                closeModal();
+                route = `/Receipt/${props.oId}&pt=${props.paymentType}`;
+                axios.post(route)
+                    .then(response => {
+                        if(response.data) {
+                          history.push(`/Receipt/${props.oId}`);
+                        }
+                    })
+                    .catch(err => console.log(err));
+            })
+            .catch(error => {
+                console.log("Payment Error: ", error);
+                alert("Payment Has Error");
+            });
     }
   };
 
@@ -72,7 +87,7 @@ const CheckoutForm = (props) => {
                               <input className="FormRowInput" id="cardOwnerName" type="text" placeholder="eg: La La" required />
                             </div>
                             <div className="FormRow">
-                              <label htmlFor="name" className="FormRowLabel mb-0">Phone</label>
+                              <label htmlFor="phone" className="FormRowLabel mb-0">Phone</label>
                               <input className="FormRowInput" id="cardOwnerPhone" type="text" placeholder="eg: 415 070 9394" required />
                             </div>
 
@@ -105,11 +120,10 @@ const CheckoutForm = (props) => {
                         <div className="text-center">
                           { !validPayment ? 
                           (<button className="btn btn-checkout-color rounded-pill w-75 mt-3" type="submit" disabled={!stripe}>Pay ${props.total} <i className="fa fa-lock" aria-hidden="true"></i> </button>) : 
-                          (<Link to={`/Receipt/${props.oId}&pt=${props.paymentType}`} onClick={closeModal}>
                           <button className="btn btn-checkout-color rounded-pill w-75 mt-3" type="submit" disabled={!stripe}>
                             Pay ${props.total} <i className="fa fa-lock" aria-hidden="true"></i>
                           </button>
-                          </Link>) }
+                          }
                         </div>
                       </form>
                     </ul>
@@ -125,5 +139,15 @@ const mapDispatchToProps = (dispatch) => {
     resetCookieAndCart: resetCookieAndCart
   }, dispatch)
 }
+
+// export default connect(null, mapDispatchToProps)(function InjectedCheckoutForm() {
+//   return (
+//     <ElementsConsumer>
+//       {({ stripe, elements }) => (
+//         <CheckoutForm stripe={stripe} elements={elements} />
+//       )}
+//     </ElementsConsumer>
+//   );
+// });
 
 export default connect(null, mapDispatchToProps)(CheckoutForm);

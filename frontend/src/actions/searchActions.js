@@ -2,7 +2,9 @@ import axios from 'axios';
 import { FETCH_PRODUCT, CLEAR_ICON_ON, CLEAR_ICON_OFF } from "../actionTypes";
 
 const realtimeSearch = (text) => async (dispatch, getState) => {
-    let route = "/search/realtime/" + text;
+    let updateText = text.replace(/\\/g, '');
+    updateText     = updateText.replace(/\//g, '');
+    let      route = "/search/realtime/" + updateText;
     if(text.length === 0 ) {
         dispatch({
             type: CLEAR_ICON_OFF,

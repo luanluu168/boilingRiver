@@ -18,12 +18,14 @@ import Order from './containers/order';
 import Receipt from './components/pages/receipt';
 import Review from './components/pages/review';
 import ReadOnlyReview from './components/pages/readOnlyReview';
+// import Sidebar from './components/sidebar/sidebar';
 
 class App extends React.Component {
   render() {
     return (
         <Router>
           <Navbar/>
+            {/* <Sidebar /> */}
             <Switch>
               <Route exact path={['/', '/api']}>
                   <Search />

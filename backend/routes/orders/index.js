@@ -26,7 +26,7 @@ router.post('/?aId=:aId&array=:addOrders', (req, res) => {
                             // create an order
                             let status            = "'draft'";
                             let quantity          =  1;
-                            let price             = 20;
+                            let price             = req.body.total;
                             let total             = price * quantity;
                             query                 = `INSERT INTO "Order"(order_date, delivered_date, total, status, customer_id) VALUES ('${timestamp}', '${nextWeekTimeStamp}', ${total}, ${status}, ${customerId}) RETURNING id`;
                             dbConnection.any(query).then(function (data) {

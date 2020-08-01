@@ -41,8 +41,8 @@ class Navbar extends React.Component {
 
                 <ul className="navbar-nav ml-auto">
                     <div className="btn-group">
-                      <button type="button" className="btn btn-dark">{ Cookie.get("userLoginInfo") && <p className="d-inline text-white-50 mr-2">Hi, {userName}</p> }<i className="fas fa-user text-white-50"></i></button>
                       <button type="button" className="btn btn-dark dropdown-toggle dropdown-toggle-split text-white-50" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        { Cookie.get("userLoginInfo") && <p className="d-inline mr-2">Hi, {userName}</p> }<i className="fas fa-user mr-2"></i>
                         <span className="sr-only">Toggle Dropdown</span>
                       </button>
                       <div className="dropdown-menu dropdown-menu-right">

@@ -42,11 +42,10 @@ class Order extends React.Component {
         return (
             this.props.loading === undefined ? (<div>Loading...</div>) : (this.props.loading === false && this.props.orders.constructor !== Array) ?
             (<div><h3>Order</h3><div className="alert alert-success text-center mt-3"><strong>Your Order is empty now</strong></div></div>) : (this.props.loading === false &&
-            <div className="row justify-content-center mt-3">
-                <div className="col-auto">
-                    <table className="table table-striped table-inverse table-responsive">
+                <div className="table-responsive mt-3">
+                    <table className="table table-striped table-inverse">
                         <thead className="thead-inverse text-center">
-                            <tr>
+                            <tr className="table-font-size">
                                 <th>ID</th>
                                 <th>Order date</th>
                                 <th>Delevered Date</th>
@@ -56,7 +55,7 @@ class Order extends React.Component {
                                 <th>Review</th>
                             </tr>
                         </thead>
-                        <tbody className="text-center">
+                        <tbody className="text-center table-font-size">
                             {
                                 this.props.orders.constructor === Array && 
                                 this.props.orders.map((eachOrder, index) => (
@@ -86,7 +85,7 @@ class Order extends React.Component {
                         </tbody>
                     </table>
                 </div>
-            </div>)
+            )
         );
     }
 }

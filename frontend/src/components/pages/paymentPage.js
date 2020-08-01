@@ -8,9 +8,11 @@ import {loadStripe} from '@stripe/stripe-js';
 import CheckoutForm from '../payment/checkoutForm';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../checkoutSteps/checkoutSteps';
-require('dotenv').config({path: '../../../../.env'});
 
-const stripePromise = loadStripe(`'${process.env.REACT_APP_PUBLISHABLE_KEY}'`);
+//TODO: FIX DOTENV STRIPE KEY
+require('dotenv').config();
+// require('dotenv').config({path: '../../../../env'});
+const stripePromise = loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY);
 
 class Payment extends React.Component {
   state = {
@@ -87,9 +89,9 @@ class Payment extends React.Component {
               </div>
             </div>
             <div className="row justify-content-center">
-              <Link to={`/`}><button className="btn btn-danger" name="deleteButton" type="submit" onClick={() => this.handleDiscardOrder(this.props.query.oId)}>Discard this order</button></Link>
+              <Link to={`/`}><button className="btn btn-danger btn-responsive-lg" name="deleteButton" type="submit" onClick={() => this.handleDiscardOrder(this.props.query.oId)}>Discard this order</button></Link>
               
-              <a className="a-href text-info" href="# " type="button" data-toggle="modal" data-target="#paymentModal"><button className="btn btn-primary ml-3" name="paymentButton" type="submit">Continue to checkout</button></a>
+              <a href="# " data-toggle="modal" data-target="#paymentModal"><button className="btn btn-primary ml-3 btn-responsive-lg" name="paymentButton" type="submit">Continue to checkout</button></a>
             </div>
           </form>
 
