@@ -34,7 +34,7 @@ router.post('/?searchText=:pName', (req, res) => {
 
 router.get('/realtime/:value?', (req, res) => {
     let query;
-    if(!req.params.value) {
+    if(!req.params.value || req.params.value === '') {
         query = `SELECT * FROM "Product"`;
     } else {
         let          searchText = req.params.value.toLowerCase() + "";

@@ -5,7 +5,7 @@ const realtimeSearch = (text) => async (dispatch, getState) => {
     let updateText = text.replace(/\\/g, '');
     updateText     = updateText.replace(/\//g, '');
     let      route = "/search/realtime/" + updateText;
-    if(text.length === 0 ) {
+    if(updateText.length === 0 ) {
         dispatch({
             type: CLEAR_ICON_OFF,
             payload: false
@@ -16,6 +16,7 @@ const realtimeSearch = (text) => async (dispatch, getState) => {
             payload: true
         });
     }
+
     return (await axios.get(route).then(response => {
                 dispatch({
                     type: FETCH_PRODUCT,
@@ -50,6 +51,14 @@ const clearIconOff = (text) => async (dispatch, getState) => {
         type: CLEAR_ICON_OFF,
         payload: text
     });
+    
+    let route = "/search/realtime/";
+    await axios.get(route).then(response => {
+        dispatch({
+            type: FETCH_PRODUCT,
+            payload: response.data
+        });
+    }).catch(error => console.log(error));
 }
 
 export { realtimeSearch, regularSearch, clearIconOn, clearIconOff };

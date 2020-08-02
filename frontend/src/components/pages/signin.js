@@ -54,8 +54,12 @@ class Signin extends React.Component {
                             <input type="submit" value="Sign-in" className="btn btn-primary rounded-pill w-75"/>
                         </div>
                         <p className="cross-middle-line-text">Or</p>
-                        <div className="text-center">
+                        <div className="text-center mb-3">
                             <Link to={`/`}>Home</Link>
+                        </div> 
+                        <p className="cross-middle-line-text">Do not have an account yet?</p>
+                        <div className="text-center">
+                            <Link to={`/Signup`}>Sign-up</Link>
                         </div> 
                     </form>
                     </div>

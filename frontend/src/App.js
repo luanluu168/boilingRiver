@@ -18,6 +18,7 @@ import Order from './containers/order';
 import Receipt from './components/pages/receipt';
 import Review from './components/pages/review';
 import ReadOnlyReview from './components/pages/readOnlyReview';
+import Landing from './components/pages/landing';
 // import Sidebar from './components/sidebar/sidebar';
 
 class App extends React.Component {
@@ -27,6 +28,9 @@ class App extends React.Component {
           <Navbar/>
             {/* <Sidebar /> */}
             <Switch>
+              <Route exact path="/Landing">
+                <Landing></Landing>
+              </Route>
               <Route exact path={['/', '/api']}>
                   <Search />
                   <ProductContainer />

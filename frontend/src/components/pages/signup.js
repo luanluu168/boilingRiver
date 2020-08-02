@@ -80,21 +80,20 @@ class Signup extends React.Component {
                         </div>
                         {/* <input type="password" className="form-control" name="userSignupPassword" placeholder="Password" required /> */}
                         </div>
-                        <div className="custom-control custom-checkbox">
+                        <div className="custom-control custom-checkbox mb-3">
                         <input type="checkbox" className="custom-control-input" id="termCheckBox" required />
                         <label className="custom-control-label" htmlFor="termCheckBox">I accept the <a href="# " type="button" data-toggle="modal" data-target="#contractModal"> Terms and Conditions</a></label>
-                        </div>
-                        <div className="row justify-content-end mb-2">
-                            <div className="col-8">
-                                <Link to="/Signin" className="text-muted h6 small text-nowrap">Already have a account?</Link>
-                            </div>
                         </div>
                         <div className="form-group row justify-content-center">
                         <input type="submit" value="Sign-up Now" className="btn btn-primary rounded-pill w-75" />
                         </div>
                         <p className="cross-middle-line-text">Or</p>
-                        <div className="text-center">
+                        <div className="text-center mb-3">
                             <Link to={`/`}>Home</Link>
+                        </div> 
+                        <p className="cross-middle-line-text">Already have an account?</p>
+                        <div className="text-center">
+                            <Link to={`/Signin`}>Sign-in</Link>
                         </div> 
                     </form>
                     </div>
