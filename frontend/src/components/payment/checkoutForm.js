@@ -7,6 +7,7 @@ import { resetCookieAndCart } from '../../actions';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import SubmitButton from './submitButton';
 
 const CheckoutForm = (props) => {
   const   stripe = useStripe();
@@ -91,14 +92,9 @@ const CheckoutForm = (props) => {
                             </div>
                           </fieldset>
                          
-                        <div className="text-center">
-                          { !validPayment ? 
-                          (<button className="btn btn-checkout-color rounded-pill w-75 mt-3" type="submit" disabled={!stripe}>Pay ${props.total} <i className="fa fa-lock" aria-hidden="true"></i> </button>) : 
-                          <button className="btn btn-checkout-color rounded-pill w-75 mt-3" type="submit" disabled={!stripe}>
-                            Pay ${props.total} <i className="fa fa-lock" aria-hidden="true"></i>
-                          </button>
-                          }
-                        </div>
+                          <div className="text-center">
+                            <SubmitButton total={props.total} stripe={stripe}/>
+                          </div>
                       </form>
                     </ul>
                   </div>
@@ -113,15 +109,5 @@ const mapDispatchToProps = (dispatch) => {
     resetCookieAndCart: resetCookieAndCart
   }, dispatch)
 }
-
-// export default connect(null, mapDispatchToProps)(function InjectedCheckoutForm() {
-//   return (
-//     <ElementsConsumer>
-//       {({ stripe, elements }) => (
-//         <CheckoutForm stripe={stripe} elements={elements} />
-//       )}
-//     </ElementsConsumer>
-//   );
-// });
 
 export default connect(null, mapDispatchToProps)(CheckoutForm);
