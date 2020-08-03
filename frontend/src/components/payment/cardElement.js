@@ -1,7 +1,7 @@
 import React from 'react';
 import {CardElement} from '@stripe/react-stripe-js';
 
-export default CustomCardElement = () => {
+function CustomCardElement(props) {
   return (<CardElement className="mt-1"
     options={{
         iconStyle: 'solid',
@@ -24,3 +24,5 @@ export default CustomCardElement = () => {
       }}
   />)
 }
+
+export default CustomCardElement;

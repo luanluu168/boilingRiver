@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
+import CustomCardElement from './cardElement';
+import BillingDetail from './billingDetailFields';
 import { bindActionCreators } from 'redux';
 import { resetCookieAndCart } from '../../actions';
 import { connect } from 'react-redux';
@@ -82,38 +84,10 @@ const CheckoutForm = (props) => {
                     <ul className="list-group">
                       <form onSubmit={handleSubmit}>
                           <fieldset className="FormGroup">
-                            <div className="FormRow">
-                              <label htmlFor="name" className="FormRowLabel mb-0">Name</label>
-                              <input className="FormRowInput" id="cardOwnerName" type="text" placeholder="eg: La La" required />
-                            </div>
-                            <div className="FormRow">
-                              <label htmlFor="phone" className="FormRowLabel mb-0">Phone</label>
-                              <input className="FormRowInput" id="cardOwnerPhone" type="text" placeholder="eg: 415 070 9394" required />
-                            </div>
+                            <BillingDetail />
 
                             <div className="FormRow">
-                                <CardElement className="mt-1"
-                                  options={{
-                                      iconStyle: 'solid',
-                                      style: {
-                                        base: {
-                                          iconColor: '#c4f0ff',
-                                          color: '#fff',
-                                          fontWeight: 500,
-                                          fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-                                          fontSize: '16px',
-                                          fontSmoothing: 'antialiased',
-                                          ':-webkit-autofill': {color: '#fce883'},
-                                          '::placeholder': {color: '#87bbfd'},
-                                        },
-                                        invalid: {
-                                          iconColor: '#ffc7ee',
-                                          color: '#ffc7ee',
-                                        },
-                                      },
-                                    }}
-                                    onChange={(element) => stripeElementChange(element)}
-                                />
+                                <CustomCardElement onChange={(element) => stripeElementChange(element)} />
                             </div>
                           </fieldset>
                          
