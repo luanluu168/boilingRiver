@@ -1,4 +1,4 @@
-# Visit the site (https://boiling-river-76816.herokuapp.com/)
+# [Visit the site](https://boiling-river-76816.herokuapp.com/)
 
 ## Project Overview:
 ```
@@ -29,7 +29,7 @@
 ├── utils
 │    └── utils.js
 ├── server.js
-└── frontend
+├── frontend
 │    ├── public
 │    |      ├── javascripts
 |    |      |        └── javascripts.js
