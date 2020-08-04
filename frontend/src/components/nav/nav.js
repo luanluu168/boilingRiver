@@ -46,8 +46,8 @@ class Navbar extends React.Component {
                         <span className="sr-only">Toggle Dropdown</span>
                       </button>
                       <div className="dropdown-menu dropdown-menu-right">
-                        <a className="dropdown-item" href="/Signup">Sign-up</a>
-                        { !Cookie.get("userLoginInfo") ? (<a className="dropdown-item" href="/Signin">Sign-in</a>) :
+                        <Link className="dropdown-item" to="/Signup">Sign-up</Link>
+                        { !Cookie.get("userLoginInfo") ? (<Link className="dropdown-item" to="/Signin">Sign-in</Link>) :
                           (<form action="/Auth/Signout" method="POST"><button className="dropdown-item" type="submit">Sign-out</button></form>)
                         }
                       </div>
