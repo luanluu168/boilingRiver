@@ -48,7 +48,7 @@ class Order extends React.Component {
                             <tr className="table-font-size">
                                 <th>ID</th>
                                 <th>Order date</th>
-                                <th>Delevered Date</th>
+                                <th>Delivered Date</th>
                                 <th>Total</th>
                                 <th>Status</th>
                                 <th>Checkout</th>
