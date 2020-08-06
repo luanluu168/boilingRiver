@@ -52,10 +52,10 @@ body {
 }
 
 .rainbow-text {
-    background: -webkit-linear-gradient(left, orange , yellow, green, rgb(0, 153, 255), rgb(116, 8, 240), violet);
-    background: -o-linear-gradient(right, orange, yellow, green,  rgb(0, 153, 255), rgb(116, 8, 240), violet);
-    background: -moz-linear-gradient(right, orange, yellow, green, rgb(0, 153, 255), rgb(116, 8, 240), violet);
-    background: linear-gradient(to right, orange , yellow, green,  rgb(0, 153, 255), rgb(116, 8, 240), violet);
+    background: -webkit-linear-gradient(left, red, orange , yellow, rgb(0, 153, 255), rgb(116, 8, 240), violet);
+    background: -o-linear-gradient(right, red, orange, yellow,  rgb(0, 153, 255), rgb(116, 8, 240), violet);
+    background: -moz-linear-gradient(right, red, orange, yellow, rgb(0, 153, 255), rgb(116, 8, 240), violet);
+    background: linear-gradient(to right, red, orange , yellow,  rgb(0, 153, 255), rgb(116, 8, 240), violet);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;  
@@ -67,6 +67,16 @@ body {
   width: 100%;
   height: 100%;
   text-align: center;
+}
+
+.background-img {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
 }
 
 .navbar-collapse ul.navbar-nav .nav-link:hover {

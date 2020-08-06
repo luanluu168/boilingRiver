@@ -16,11 +16,11 @@ function postStripe(req, res) {
         source: req.body.id, 
         name: req.params.name, 
         address: { 
-            line1: 'TC 9/4 Old MES colony', 
-            postal_code: '452331', 
-            city: 'Indore', 
-            state: 'Madhya Pradesh', 
-            country: 'India', 
+            line1: '50 Felan', 
+            postal_code: '94112', 
+            city: 'San Francisco', 
+            state: 'CA', 
+            country: 'USA', 
         },
         phone: req.params.phone
     }) 
