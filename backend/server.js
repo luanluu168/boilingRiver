@@ -1,12 +1,10 @@
 require('dotenv').config();
-const  createError = require('http-errors');
 const      express = require('express');
 
 const         path = require('path');
 const cookieParser = require('cookie-parser');
 const      session = require('express-session');
 
-//TODO: use redis to store session
 // const        redis = require('redis');
 // const  redisClient = redis.createClient();
 // const   RedisStore = require('connect-redis')(session);
@@ -56,33 +54,12 @@ app.use('/Review', reviewRouter);
 app.use('/stripe', stripeRouter);
 
 app.get("*", (req, res) => {
-    // res.status(404).redirect("/Error");
-    // res.status(404).json({msg: "Error: page not found"});
-    res.sendFile(path.join(__dirname, '/../frontend/build/index.html'));
-});
-
-app.use(function (req, res, next) {
-    next(createError(404))
-});
-
-app.use(function (err, req, res, next) {
-    let error;
-    switch (err.status) {
-      case 404:
-        error = {
-          status: 404,
-          text: '404 File Not Found',
-        }
-        break
-      default:
-        error = {
-          status: 500,
-          text: '500 Internal Server Error',
-        }
+    if (process.env.NODE_ENV === "production") {
+      res.sendFile(path.join(__dirname, '/../frontend/build/index.html'));
+      return;
     }
-  
-    res.status(error.status);
-    res.render('error', { title: error.status + ' Error', error });
-})
+      
+    res.sendFile(path.join(__dirname, '/../frontend/public/index.html'));
+});
 
 app.listen(PORT, () => console.log(`Server is listening on Port ${PORT}`));

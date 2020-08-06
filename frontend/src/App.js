@@ -54,8 +54,8 @@ class App extends React.Component {
               </Route>
               <Route exact path="/Products/:id" render={({match}) => (
                   match.params.id && <ProductDetail className="product-detail-page" product={store.getState().products[match.params.id]} pId={match.params.id}/>
-                )}
-              />
+                )}>
+              </Route>
               <Route exact path="/Signin">
                   <Signin/>
               </Route>
@@ -68,28 +68,28 @@ class App extends React.Component {
               </Route>
               <Route path="/Payment/:oId" render={({match}) => (
                   <Payment query={queryString.parse(match.params.oId)}/>
-              )}
-              />
+              )}>
+              </Route>
               <Route exact path="/Receipt/:oId&pt=:paymentType" render={({match}) => (
                   <Receipt oId={match.params.oId} pt={match.params.paymentType}/>
-                )}
-              />
+                )}>
+              </Route>
               <Route exact path="/Receipt/:oId" render={({match}) => (
                   <Receipt oId={match.params.oId}/>
-                )}
-              />
+                )}>
+              </Route>
               <Route exact path="/Review/orderId=:oId" render={({match}) => (
                   <Review oId={match.params.oId}/>
-              )}
-              />
+              )}>
+              </Route>
               <Route exact path="/Review/readOnlyReview/orderId=:oId&ct=:content&r=:rating" render={({match}) => (
                   <ReadOnlyReview oId={match.params.oId} content={match.params.content} rating={match.params.rating}/>
-              )}
-              />
+              )}>
+              </Route>
               <Route exact path="/Error">
                   <Error/>
               </Route>
-              <Redirect to="/"></Redirect>
+              <Redirect to="/Error"></Redirect>
             </Switch>
           <Footer/>
         </Router>  

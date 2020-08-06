@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import CustomCardElement from './cardElement';
 import BillingDetail from './billingDetailFields';
@@ -14,7 +14,7 @@ const CheckoutForm = (props) => {
   const elements = useElements();
   let    history = useHistory();
 
-  const [validPayment, setValidPayment] = useState(false);
+  // const [validPayment, setValidPayment] = useState(false);
 
   const handleSubmit = async (event) => {
     // Block native form submission.
@@ -62,17 +62,17 @@ const CheckoutForm = (props) => {
     props.resetCookieAndCart();
   }
 
-  const stripeElementChange = (element) => {
-    if (element.complete && window.$('#cardOwnerName').val().length !== 0 && window.$('#cardOwnerPhone').val().length !== 0) {
-      setValidPayment(true);
-      // enable payment button
-    } else if (element.error) {
-      setValidPayment(false);
-      // show validation to customer
-    } else if (element.empty) {
-      setValidPayment(false);
-    }
-  }
+  // const stripeElementChange = (element) => {
+  //   if (element.complete && window.$('#cardOwnerName').val().length !== 0 && window.$('#cardOwnerPhone').val().length !== 0) {
+  //     setValidPayment(true);
+  //     // enable payment button
+  //   } else if (element.error) {
+  //     setValidPayment(false);
+  //     // show validation to customer
+  //   } else if (element.empty) {
+  //     setValidPayment(false);
+  //   }
+  // }
   
   return (
           <div className="row justify-content-center">
@@ -88,7 +88,7 @@ const CheckoutForm = (props) => {
                             <BillingDetail />
 
                             <div className="FormRow">
-                                <CustomCardElement onChange={(element) => stripeElementChange(element)} />
+                                <CustomCardElement />
                             </div>
                           </fieldset>
                          

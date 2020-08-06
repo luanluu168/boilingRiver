@@ -106,18 +106,16 @@ class Signup extends React.Component {
                             <h5 className="modal-title">Terms And Conditions</h5><button className="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
                         <div className="modal-body">
                             <h3>AGREEMENT TO TERMS</h3>
-                            <p>These Terms of Use constitute a legally binding agreement made between you and BuyKaCloth, concerning your access to and the use of the BuyKaCloth website as well
-                            as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected there to (collectively, the “Site”). </p>
-                            <p>You must agree that by accessing the Site, you have read, understood, and agree to all of these Terms of Use. </p>
-                            <p>We will alert you about any changes of these Terms of Use, but you can waive any right to receive specific notice of each such change. However, it is your responsibility to periodically review these Terms of Use
-                            to stay informed of updates.</p>
+                            <p>These Terms of Use constitute a legally binding agreement made between you and BoilingRiver </p>
+                            <p>By accessing the website, you must agree that you have read, understood, and agree to all of these Terms of Use. </p>
+                            <p>We will alert you about any changes of these Terms of Use. However, it is your responsibility to periodically review and check the update of these Terms of Use.</p>
                             <h5>PRODUCTS</h5>
                             <p>All products are subject to availability. We reserve the right to discontinue or sale any products at any time for any reason. Prices for all products are subject to change.</p>
                             <h5>COOKIES</h5>
                             <p>This site uses cookies to make sure everything perform as expected for users. By continuing to use this site, you consent to our site of cookies.</p>
                             <h5>PRIVACY POLICY</h5>
-                            <p>We care about data privacy and security. By using the Site, you must agree to be bound by our Privacy Policy, which is incorporated into these Terms of Use. Also, please notice that
-                            the Site is hosted in the United States. </p>
+                            <p>We care about data privacy and security. By using the website, you must agree to be bound by our Privacy Policy, which is incorporated into these Terms of Use. Also, please notice that
+                            the wedsite is hosted in the United States. </p>
                         </div>
                         </div>
                     </div>
