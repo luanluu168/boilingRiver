@@ -1,8 +1,8 @@
 import React from 'react';
 import {selectProduct, fetchProduct, requestProduct, errorProduct, deleteProduct, addProduct, updateProduct, searchProduct } from "../../actions/index.js";
-import { bindActionCreators } from "redux";
 import axios from 'axios';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class ManageProducts extends React.Component {
     state = {
@@ -221,3 +221,186 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageProducts);
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { fetchProduct, requestProduct, deleteProduct } from "../../actions/index.js";
+// import axios from 'axios';
+// import { useSelector, useDispatch } from 'react-redux';
+// function ManageProducts(props) {
+//     const [showInsertForm, setShowInsertForm]       = useState(false);
+//     const [showUpdateForm, setShowUpdateForm]       = useState(false);
+//     const [categories, setCategories]               = useState([]);
+//     const [updateProductInfo, setUpdateProductInfo] = useState({});
+
+//     let    loading = useSelector(state => state.products.loading);
+//     let   products = useSelector(state => state.products.products);
+//     const dispatch = useDispatch();
+
+//     const fetchProductData = async () => {
+//         dispatch(requestProduct());
+//         let route = "/ManageProducts";
+//         return (await axios.get(route)
+//                     .then(response => response.data)
+//                     .catch(error => console.log(error)));
+//     }
+
+//     useEffect(() => {
+//         fetchProductData().then(products => {
+//             dispatch(fetchProduct(products));
+//         }).catch(error => console.log(error));
+//     }, [loading, products, categories]);
+
+//     const changeInsertFormStatus = () => {
+//         setShowInsertForm(!showInsertForm);
+//         setShowUpdateForm(false);
+//     }
+
+//     const changeUpdateFormStatus = () => {
+//         setShowInsertForm(false);
+//         setShowUpdateForm(!showUpdateForm);
+//     }
+
+//     const delProduct = async (id) => {
+//         let route = "/ManageProducts/delete/" + id;
+//         await axios.post(route).then(response => response.data.success === true && dispatch(deleteProduct(id)))
+//                                 .catch(error => console.log(error));
+//     }
+
+//     const insertProduct = async (btnName) => {
+//         let route = "/ManageProducts/categoryOptions";
+//         await axios.get(route).then(response =>  setCategories(response.data))
+//                                 .catch(error => console.log(error));
+//         changeInsertFormStatus();
+//     }
+
+//     const updateProduct = async (id) => { 
+//         let route = "/ManageProducts/updateProductInfo/" + id;
+//         await axios.get(route).then(response => {
+//                                     setUpdateProductInfo(response.data[0]);
+//                                 })
+//                                 .catch(error => console.log(error));
+//         changeUpdateFormStatus();
+//     }
+
+//     return (
+//             loading === undefined ? <div>Loading...</div> :
+//             loading === false &&
+//             (<div className="row justify-content-center mt-3">
+//                 <div className="col-auto">
+//                     {showInsertForm && 
+//                     <div className="row justify-content-center mt-3 mb-4">
+//                         <div className="card">
+//                             <h5 className="card-header text-center py-4 bg-primary">
+//                                 <strong className="text-white">Insert Product Information</strong>
+//                             </h5>
+//                             <div className="card-body px-lg-5">
+//                                 <form className="text-center" action="/ManageProducts/insert" method="POST">
+//                                     <select className="mb-2 w-100" name="productFormCategoryOption" required>
+//                                         <option value="">---Select A Category---</option>
+//                                         {
+//                                             categories && categories.map((category, index) => 
+//                                                 <option key={index} value={category.id}> {category.name} </option>
+//                                             )
+//                                         }
+//                                     </select>
+//                                     <div className="md-form mt-3 mb-4">
+//                                         <input type="text" name="productFormName" className="form-control" placeholder="Product name" required />
+//                                     </div>
+//                                     <div className="md-form mt-3 mb-4">
+//                                         <input type="text" name="productFormPrice" className="form-control" placeholder="Product price" required />
+//                                     </div>
+//                                     <div className="md-form mt-3 mb-4">
+//                                         <input type="text" name="productFormDescription" className="form-control" placeholder="Product description" required />
+//                                     </div>
+//                                     <div className="md-form mt-3 mb-4">
+//                                         <input type="text" name="productFormBarcode" className="form-control" placeholder="Product barcode" required />
+//                                     </div>
+//                                     <div className="md-form mt-3 mb-4">
+//                                         <input type="text" name="productFormColor" className="form-control" placeholder="Product color" required />
+//                                     </div>
+//                                     <div className="md-form mt-3 mb-4">
+//                                         <input type="text" name="productFormSize" className="form-control" placeholder="Product size" required />
+//                                     </div>
+//                                     <div className="md-form mt-3 mb-4">
+//                                         <input type="text" name="productFormQuantity" className="form-control" placeholder="Product quantity" required />
+//                                     </div>
+//                                     <button className="btn btn-primary btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">Save</button>
+//                                 </form>
+//                             </div>
+//                         </div>
+//                     </div>
+//                     }
+
+                    
+//                     <div className="row">
+//                         <div className="col">
+//                             <table className="table table-striped table-inverse table-responsive">
+//                                 <thead className="thead-inverse text-center">
+//                                     <tr>
+//                                         <th>ID#</th>
+//                                         <th>Name</th>
+//                                         <th>Description</th>
+//                                         <th>Price</th>
+//                                         <th>Insert</th>
+//                                         <th>Delete</th>
+//                                         <th>Update</th>
+//                                     </tr>
+//                                 </thead>
+//                                 <tbody className="text-center">
+//                                     {
+//                                         products.map((eachProduct, index) => (
+//                                             <tr key={index}>
+//                                                 <td>{eachProduct.id}</td>
+//                                                 <td>{eachProduct.name}</td>
+//                                                 <td>{eachProduct.description}</td>
+//                                                 <td>{eachProduct.price}</td>
+//                                                 <td><button className="btn btn-warning" name="insertProductButton" onClick={(event) => insertProduct(event.target.name)}>Insert</button></td>
+//                                                 <td><button className="btn btn-danger"  onClick={() => delProduct(eachProduct.id)}>Delete</button></td>
+//                                                 <td><button className="btn btn-success" name="updateProductButton" onClick={() => updateProduct(eachProduct.id)}>Update</button></td>
+//                                             </tr>
+//                                         ))
+//                                     }
+//                                 </tbody>
+//                             </table>
+//                         </div>
+
+//                         {showUpdateForm && 
+//                             <div className="col-sm-4">
+//                                 <div className="row justify-content-center mt-3 mb-4 mr-1">
+//                                     <div className="card">
+//                                         <h5 className="card-header text-center py-4 bg-primary">
+//                                             <strong className="text-white">Update Product Information</strong>
+//                                         </h5>
+//                                         <div className="card-body px-lg-5">
+//                                             <form className="text-center" action="/ManageProducts/update" method="POST">
+//                                                 <div className="md-form mt-3 mb-4 d-none">
+//                                                     {updateProductInfo && <input type="text" name="productFormId" defaultValue={updateProductInfo.id} className="form-control" placeholder="Product id" required />}
+//                                                 </div>
+//                                                 <div className="md-form mt-3 mb-4">
+//                                                     {updateProductInfo && <input type="text" name="productFormName" defaultValue={updateProductInfo.name} className="form-control" placeholder="Product name" required />}
+//                                                 </div>
+//                                                 <div className="md-form mt-3 mb-4">
+//                                                     {updateProductInfo && <input type="text" name="productFormPrice" defaultValue={updateProductInfo.price} className="form-control" placeholder="Product price" required />}
+//                                                 </div>
+//                                                 <div className="md-form mt-3 mb-4">
+//                                                     {updateProductInfo && <input type="text" name="productFormDescription" defaultValue={updateProductInfo.description} className="form-control" placeholder="Product description" required />}
+//                                                 </div>
+//                                                 <div className="md-form mt-3 mb-4">
+//                                                     {updateProductInfo && <input type="text" name="productFormBarcode" defaultValue={updateProductInfo.bar_code} className="form-control" placeholder="Product barcode" required />}
+//                                                 </div>
+//                                                 <button className="btn btn-primary btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">Save</button>
+//                                             </form>
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         }
+//                     </div>
+//                 </div>
+//             </div>)
+//     )
+// }
+
+// export default ManageProducts;
