@@ -39,18 +39,20 @@ class Cart extends React.Component {
                         <h3>
                             Shopping Cart
                         </h3>
-                        <h6 className="float-right mr-3">
+                        <p className="float-right mr-3">
                             Price
-                        </h6>
+                        </p>
                     </li>
                     {
                     cart.constructor === Array && cart.length === 0 ? <div className="alert alert-success text-center mt-3"><strong>Your cart is empty</strong></div> : 
                         cart.map(item =>
                             <li key={item.id} className="list-group-item list-group-item-info">
                                 <div className="row">
-                                    <div className="col-5">
-                                        <img src={`/media/${item.img_name}`} height="80" width="80" className="rounded-circle" alt="productImg" />
-                                        <div>
+                                    <div className="col-5 text-center">
+                                        <div className="d-block">
+                                            <img src={`/media/${item.img_name}`} className="rounded-circle product-img-width-height" alt="productImg" />
+                                        </div>
+                                        <div className="d-block">
                                             <Link to={"/products/" + item.id}> {item.name} </Link>
                                         </div>
                                     </div>

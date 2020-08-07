@@ -37,6 +37,11 @@ body {
   .checkout-text {
     font-size: 0.52rem;
   }
+
+  .product-img-width-height {
+    width: 60px;
+    height: 60px;
+  }
 }
 @media (min-width: 751px) {
   .btn-responsive-sm {
@@ -48,6 +53,11 @@ body {
   .btn-responsive-lg {
     font-size: 95%;
     line-height: 1;
+  }
+
+  .product-img-width-height {
+    width: 150px;
+    height: 150px;
   }
 }
 
