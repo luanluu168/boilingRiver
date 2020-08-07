@@ -24,7 +24,7 @@ class Navbar extends React.Component {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="navbar-collapse collapse" id="navbarToggler">
-                <ul className="navbar-nav">
+                <ul className="navbar-nav mr-auto">
                   <li className="nav-item">
                       <Link className="nav-link" to="/" id="home-link"> Home</Link>
                   </li>
@@ -39,7 +39,8 @@ class Navbar extends React.Component {
                   </li>
                 </ul>
 
-                <ul className="navbar-nav ml-auto">
+                <ul className="navbar-nav">
+                  <li className="nav-item">
                     <div className="btn-group">
                       <button type="button" className="btn btn-dark dropdown-toggle dropdown-toggle-split text-white-50" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="navbar-auth-button">
                         { Cookie.get("userLoginInfo") && <p className="d-inline mr-2">Hi, {userName}</p> }<i className="fas fa-user mr-2"></i>
@@ -52,6 +53,7 @@ class Navbar extends React.Component {
                         }
                       </div>
                     </div>
+                  </li>
                 </ul>
             </div>
         </nav>
