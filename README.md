@@ -1,4 +1,17 @@
-# [Visit the site](https://boiling-river-76816.herokuapp.com/)
+# Boiling River
+
+- A place to shop beautiful clothing
+
+## [Click to Visit!](https://boiling-river-76816.herokuapp.com/)
+
+## Frontend: React, Redux, ...
+## Backend: Express, ...
+## Payment: Stripe
+
+## Requrements
+
+- Node & npm or yarn
+- Postgres Server
 
 ## Project Overview:
 ```
@@ -128,7 +141,3 @@
 ├── Procfile
 └── README.md
 ```
-
-# Frontend: React, Redux, ...
-# Backend: Express, ...
-# Payment: Stripe
