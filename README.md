@@ -1,17 +1,39 @@
 # Boiling River
 
-- A place to shop beautiful clothing
+A place to shop beautiful clothing
 
 ## [Click to Visit!](https://boiling-river-76816.herokuapp.com/)
-
-## Frontend: React, Redux, ...
-## Backend: Express, ...
-## Payment: Stripe
 
 ## Requrements
 
 - Node & npm or yarn
 - Postgres Server
+
+# To run
+1. Create a .env file that looks the following way:
+```
+SECRET=<your_secret>
+REACT_APP_PUBLISHABLE_KEY=<your_stripe_publishable_key>
+REACT_APP_SECRET_KEY=<your_stripe_secret_key>
+DATABASE_URL=postgres://<db_user>:<db_password>@<db_host>:<db_port>/<db_name>
+```
+2. Install dependencies
+```
+npm i
+```
+3. Then
+```
+npm start
+```
+
+## Frontend: 
+React, Redux, ...
+
+## Backend: 
+Express, ...
+
+## Payment: 
+Stripe
 
 ## Project Overview:
 ```
