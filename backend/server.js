@@ -5,10 +5,6 @@ const         path = require('path');
 const cookieParser = require('cookie-parser');
 const      session = require('express-session');
 
-// const        redis = require('redis');
-// const  redisClient = redis.createClient();
-// const   RedisStore = require('connect-redis')(session);
-
 const           appRouter = require('./routes/app/index.js');
 const          authRouter = require('./routes/auth/index.js');
 const      productsRouter = require('./routes/products/index.js');
@@ -34,13 +30,7 @@ app.use(session({
     cookie: {
         maxAge: 2 * 60 * 60 * 1000 // 2 hours
     }
-    // store: new RedisStore({ host: 'localhost', port: 6379, client: redisClient, ttl: 86400 }),
 }));
-
-
-// redisClient.on('error', (err) => {
-//     console.log('Redis error: ', err);
-// });
 
 // routes
 app.use('/api', appRouter);
