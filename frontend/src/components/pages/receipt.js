@@ -92,7 +92,7 @@ class Receipt extends React.Component {
                         </td>
                         </tr>
                         <tr>
-                        <td className="content-block"><p>Thanks for shopping at BuyKaCloth</p></td>
+                        <td className="content-block"><p>Thanks for shopping at Boiling River</p></td>
                         </tr>
                         <tr>
                         <td><p className="text-center"> Have a great day ! </p></td>

@@ -19,13 +19,8 @@ class Sidebar extends React.Component {
         return (
             <aside className="sidebar-container bg-danger d-inline">
                 <button className="sidebar bg-primary" onClick={() => this.openMenu()}>
-                    {/* <ul className="list-unstyled">
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul> */}
                     <ul className="vertical-text">
-                        What the heck
+                        Sidebar
                     </ul>
                 </button>
                 <div className="bg-secondary" width="500" height="500">
@@ -34,15 +29,6 @@ class Sidebar extends React.Component {
                     <p>p3 this is the chat</p>
                 </div>    
             </aside>
-
-            // <div class="sidebar">
-            //     <ul class="sidebar-list">
-            //         <li class="sidebar-item"><a href="#" class="sidebar-anchor">Item 1</a></li>
-            //         <li class="sidebar-item"><a href="#" class="sidebar-anchor">Item 2</a></li>
-            //         <li class="sidebar-item"><a href="#" class="sidebar-anchor">Item 3</a></li>
-            //         <li class="sidebar-item"><a href="#" class="sidebar-anchor">Item 4</a></li>
-            //     </ul>
-            // </div>
         )
     }
 }

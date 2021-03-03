@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { addOrder } from '../actions/orderActions';
-// import axios from 'axios';
 
 import Cookie from 'js-cookie';
 import { deleteCartItem, changeCartItemQuantity, addToCart, fetchCookieItemToCart } from '../actions';
@@ -12,14 +11,6 @@ import CheckoutSteps from '../components/checkoutSteps/checkoutSteps';
 
 // TODO: FIX BUTTON GENERATE TWO ORDER ON 1 CLICK
 class Cart extends React.Component {
-    // gotoOrder = async (event) => {
-    //     let route = '/orders/aId=' + (Cookie.getJSON('userLoginInfo') ? Cookie.getJSON('userLoginInfo').aId : '-1') + '&array=' + JSON.stringify(this.props.cart.map(c => c.id));
-    //     await axios.post(route).then(response => {
-    //         console.log("data: " + response.data);
-    //     }).catch(error => console.log(error));
-    //     // maynot be called
-    //     // this.props.addOrder(this.props.cart);
-    // }
 
     handleQuantityChange(event) {
         console.log("quantity is changed: " + event.target.value + ", key: " + event.target.id);
