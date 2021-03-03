@@ -1,12 +1,20 @@
 html {
+  height: 100%;
+  width: 100%;
   font-size: 1.4rem;
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
   font-family: 'Times New Roman', Times, serif, sans-serif;
   background-image: linear-gradient(to right, #b9dada,  #44c8c4);
+}
+
+div.body-wrapper {
+  min-height: 100%;
 }
 
 @media (max-width: 750px) {
@@ -87,6 +95,7 @@ body {
   min-width: 100%;
   min-height: 100%;
   z-index: -1;
+  opacity: 0.7;
 }
 
 .navbar-collapse ul.navbar-nav .nav-link:hover {
@@ -95,14 +104,14 @@ body {
   border-bottom: #ffa500 2px solid;
 }
 .footer {
-  position: fixed;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
+  text-align: center;
+  background-color: #343a40;
+  color: #ccc;
+  margin-top: 1rem;
+  padding: 0.5rem 0rem;
 }
 .product-detail-page {
   width: 100%;
-  height: 100vh;
 }
 .orange-text {
   color: #ec6104;
@@ -187,68 +196,6 @@ body {
   writing-mode: vertical-rl;
   text-orientation: upright;
 }
-
-/* .sidebar-list {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  position: relative;
-  margin-top: 150px;
-  text-align: center;
-}
-.sidebar-item {
-  margin: 30px 0;
-  opacity: 0;
-  -webkit-transform: translateY(-20px);
-  -moz-transform: translateY(-20px);
-  -ms-transform: translateY(-20px);
-  -o-transform: translateY(-20px);
-  transform: translateY(-20px);
-}
-.sidebar {
-  height: 100%;
-  width: 400px;
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  right: 0;
-  background-color: #EF8354;
-}
-.sidebar-anchor {
-  color: #FFF;
-  text-decoration: none;
-  font-size: 1.8em;
-  text-transform: uppercase;
-  position: relative;
-  padding-bottom: 7px;
-}
-.sidebar-anchor:before {
-  content: "";
-  width: 0;
-  height: 2px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  color: #fff;
-  background-color: #FFF;
-  -webkit-transition: all .7s ease-in-out;
-  -moz-transition: all .7s ease-in-out;
-  -ms-transition: all .7s ease-in-out;
-  -o-transition: all .7s ease-in-out;
-  transition: all .7s ease-in-out;
-}
-.sidebar-anchor:hover:before {
-  width: 100%;
-} */
-
-
-
-
-
-
-
-
-
 
 .FormGroup {
   margin: 0 15px 20px;

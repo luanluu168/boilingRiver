@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import Navbar from './components/nav/nav';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import Footer from './components/footer/footer';
 import Signin from './components/pages/signin';
 import Signup from './components/pages/signup';
 import ProductDetail from './containers/productDetail';
@@ -19,14 +18,12 @@ import Receipt from './components/pages/receipt';
 import Review from './components/pages/review';
 import ReadOnlyReview from './components/pages/readOnlyReview';
 import Landing from './components/pages/landing';
-// import Sidebar from './components/sidebar/sidebar';
 
 class App extends React.Component {
   render() {
     return (
         <Router>
           <Navbar/>
-            {/* <Sidebar /> */}
             <Switch>
               <Route exact path="/Landing">
                 <Landing></Landing>
@@ -91,7 +88,6 @@ class App extends React.Component {
               </Route>
               <Redirect to="/Error"></Redirect>
             </Switch>
-          <Footer/>
         </Router>  
     );
   }
