@@ -32,22 +32,6 @@ function postStripe(req, res) {
             customer: customer.id
         }, stripeChargeCallback(res)); 
     }); 
-    // .then((charge) => { 
-    //     console.log("charge: ", charge);
-    //     res.send("Success")  // If no error occurs 
-    // }) 
-    // .catch((err) => { 
-    //     console.log("Err: ", err);
-    //     res.send(err)       // If some error occurs 
-    // }); 
 }
 
 module.exports = postStripe;
-
-
-// const body = {
-//     source: req.body.id,
-//     amount: 10 * 100,
-//     currency: "usd"
-//   };
-// stripe.charges.create(body, stripeChargeCallback(res));
