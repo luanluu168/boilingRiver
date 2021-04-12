@@ -2,8 +2,6 @@
 
 A place to shop beautiful clothing
 
-## [Click to Visit!](https://boiling-river-76816.herokuapp.com/)
-
 ## Requrements
 
 - Node & npm or yarn
