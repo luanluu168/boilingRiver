@@ -5,21 +5,18 @@ A place to shop beautiful clothing
 ## Requrements
 
 - Node & npm or yarn
-- Postgres Server
 
-# To run
-1. Create a .env file that looks the following way:
-```
-SECRET=<your_secret>
-REACT_APP_PUBLISHABLE_KEY=<your_stripe_publishable_key>
-REACT_APP_SECRET_KEY=<your_stripe_secret_key>
-DATABASE_URL=postgres://<db_user>:<db_password>@<db_host>:<db_port>/<db_name>
-```
-2. Install dependencies
+## Installation
+
+Install dependencies:
 ```
 npm i
 ```
-3. Then
+
+## Development
+
+Start express development server:
+
 ```
 npm start
 ```
