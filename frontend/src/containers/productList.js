@@ -17,7 +17,6 @@ class ProductList extends React.Component {
     async componentDidMount() {
         await this.getProductData()
                     .then(products => {
-                                        // console.log("_________" + JSON.stringify(products));
                                         this.props.fetchProduct(products);
                                         });
     }
@@ -27,7 +26,6 @@ class ProductList extends React.Component {
         let route = this.state.isSearch ? `/search/?searchText=:${this.state.searchText}` : `/api`;
         return (await axios.get(route)
                           .then((response) => {
-                            //   console.log("!!!!!!!!!!!!!!!!" + JSON.stringify(response));
                             return response.data;
                           })
                           .catch((error) => {
@@ -65,14 +63,12 @@ class ProductList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log("__________state:" + JSON.stringify(state.products));
     return {
         loading: state.products.loading,
         products: state.products.products
     }
 }
 const mapDispatchToProps = (dispatch) => {
-    // console.log("____________dispatch: " + dispatch);
     return bindActionCreators({
         selectProduct: selectProduct,
         fetchProduct: fetchProduct,
