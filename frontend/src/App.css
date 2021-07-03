@@ -366,3 +366,31 @@ div > .form-control {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
+
+
+#clothesAutocompleteOptions {
+  position: absolute;
+  top: 53px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding-left: 0px;
+
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border: 1px solid #03ebf3;
+  background-color: #fff;
+}
+#clothesAutocompleteOptions > li {
+  list-style: none;
+  padding: 5px 30px;
+  margin: 0px;
+}
+#clothesAutocompleteOptions > li:last-child:hover {
+  background-color: #d3d3d3;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+#clothesAutocompleteOptions > li:not(:last-child):hover {
+  background-color: #d3d3d3;
+}
