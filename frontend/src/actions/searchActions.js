@@ -1,28 +1,41 @@
 import axios from 'axios';
-import { FETCH_PRODUCT, CLEAR_ICON_ON, CLEAR_ICON_OFF } from "../actionTypes";
+import { 
+    FETCH_PRODUCT,
+    CLEAR_ICON_ON,
+    CLEAR_ICON_OFF, 
+    REAL_TIME_SEARCH,
+    AUTOCOMPLETE_ON,
+    AUTOCOMPLETE_OFF
+} from "../actionTypes";
 
 const realtimeSearch = (text) => async (dispatch, getState) => {
-    let updateText = text.replace(/\\/g, '');
-    updateText     = updateText.replace(/\//g, '');
-    let      route = "/search/realtime/" + updateText;
-    if(updateText.length === 0 ) {
-        dispatch({
-            type: CLEAR_ICON_OFF,
-            payload: false
-        });
+    let updateText = text.trim().replace(/\\/g, '');
+    updateText = updateText.replace(/\//g, '');
+    const route = "/search/realtime/" + updateText;
+    
+    if(updateText.match(/^(\s*)$/gi)) {
+        dispatch(setAutocomplete(false));
     } else {
-        dispatch({
-            type: CLEAR_ICON_ON,
-            payload: true
-        });
+        dispatch(setAutocomplete(true));
     }
 
-    return (await axios.get(route).then(response => {
-                dispatch({
-                    type: FETCH_PRODUCT,
-                    payload: response.data
-                });
-            }).catch(error => console.log(error)));
+    return (await axios
+                    .get(route)
+                    .then(response => {
+                        dispatch({
+                            type: REAL_TIME_SEARCH,
+                            payload: {
+                                data: response.data,
+                                input: updateText
+                            }
+                        });
+
+                        dispatch({
+                            type: FETCH_PRODUCT,
+                            payload: response.data
+                        });
+                    })
+                    .catch(error => console.log(error)));
 }
 
 const regularSearch = (text) => async (dispatch, getState) => {
@@ -31,34 +44,45 @@ const regularSearch = (text) => async (dispatch, getState) => {
         return {};
     }
 
-    return (await axios.get(route).then(response => {
+    return (await axios
+                    .get(route)
+                    .then(response => {
+                        dispatch({
+                            type: FETCH_PRODUCT,
+                            payload: response.data
+                        });
+                    }).catch(error => console.log(error)));
+}
+
+const clearIconOn = () => async (dispatch, getState) => {
+    dispatch({
+        type: CLEAR_ICON_ON,
+        payload: true
+    });
+}
+
+const clearIconOff = () => async (dispatch, getState) => {
+    dispatch({
+        type: CLEAR_ICON_OFF,
+        payload: false
+    });
+    
+    let route = "/search/realtime/";
+    await axios
+            .get(route)
+            .then(response => {
                 dispatch({
                     type: FETCH_PRODUCT,
                     payload: response.data
                 });
-            }).catch(error => console.log(error)));
+            }).catch(error => console.log(error));
 }
 
-const clearIconOn = (text) => async (dispatch, getState) => {
+const setAutocomplete = (status) => async (dispatch, getState) => {
     dispatch({
-        type: CLEAR_ICON_ON,
-        payload: text
+        type: status ? AUTOCOMPLETE_ON : AUTOCOMPLETE_OFF,
+        payload: status
     });
-}
+} 
 
-const clearIconOff = (text) => async (dispatch, getState) => {
-    dispatch({
-        type: CLEAR_ICON_OFF,
-        payload: text
-    });
-    
-    let route = "/search/realtime/";
-    await axios.get(route).then(response => {
-        dispatch({
-            type: FETCH_PRODUCT,
-            payload: response.data
-        });
-    }).catch(error => console.log(error));
-}
-
-export { realtimeSearch, regularSearch, clearIconOn, clearIconOff };
+export { realtimeSearch, regularSearch, clearIconOn, clearIconOff, setAutocomplete };
