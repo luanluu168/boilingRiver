@@ -394,3 +394,11 @@ div > .form-control {
 #clothesAutocompleteOptions > li:not(:last-child):hover {
   background-color: #d3d3d3;
 }
+
+#clothesAutocompleteOptions > li > b {
+  color: #f36060;
+}
+#clothesAutocompleteOptions > li > b > span.not-bold {
+  color: #303030;
+  font-weight: normal;
+}

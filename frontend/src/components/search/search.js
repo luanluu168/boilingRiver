@@ -19,13 +19,49 @@ class Search extends React.Component {
         this.props.setAutocomplete(false);
     }
 
+    strToArrayHtml(str, index) {
+        const result = [];
+        const openAnchorStack = [];
+        let currentString = "";
+
+        for(let i=0; i<str.length; ++i) {
+            currentString += str[i];
+
+            if(str[i] === "<") {
+                openAnchorStack.push("<");
+                if(openAnchorStack.length === 2) {
+                    result.push(<span key={index} className="not-bold">{currentString.substr(0, currentString.length-1)}</span>)
+                    openAnchorStack.length = 0;
+                    index++;
+                } else {
+                    result.push(currentString.slice(0, -1));
+                }
+                // skip the text inside the open and close anchor
+                while(str[i] !== ">") {
+                    i++;
+                }
+                currentString = "";
+            }
+        }
+
+        if(currentString !== "") {
+            result.push(currentString.substr(0, currentString.length));
+        }
+        
+        return result;
+    }
+
     renderAvailableOptions() {
+        const input = window.$("#searchBar").val();
+        const regex = new RegExp(input?.trim().replace(/([(){}?*+\\[\]])/gi, "\\$1"), "gi");
         return (
             this.props.isAutocompleteOn &&
-            this.props.availableOptions?.length > 0 && 
+            this.props.availableOptions?.length > 0 &&
             <ul id="clothesAutocompleteOptions">
                 { this.props.availableOptions?.map((item, index) => (
-                    <li key={index} value={item} onClick={() => this.handleAutocompleteOnClick(item)}>{item}</li>
+                    <li key={index} value={item} onClick={() => this.handleAutocompleteOnClick(item)}>
+                        <b>{this.strToArrayHtml(item.replace(regex, '<span className="not-bold">$&</span>'), index)}</b>
+                    </li>
                 ))}
             </ul>
         );
@@ -34,7 +70,7 @@ class Search extends React.Component {
     renderClearIcon() {
         return (
             this.props.displayClearIcon &&
-            <span className="remove-search-icon" onClick={() => this.clearSearchText()}><span>&#10006;</span></span>
+            <span className="remove-search-icon" onClick={() => this.clearSearchText()}></span>
         );
     }
 
